@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+<title>{{ title }}</title>
+<!-- Bootstrap CSS to make the website pretty -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+<!-- End of bootstrap CSS-->
+
+</head>
+<body>
+
+<!-- Bootstrap Navbar -->
+<nav class="navbar navbar-expand-md bg-dark navbar-dark mb-3">
+  
+  <!-- Brand -->
+  <a class="navbar-brand" href="#">Triptych</a>
+
+  <!-- Toggler/collapsibe Button -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <!-- Navbar links -->
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <li class="nav-item">
+            <a class="nav-link text-light" href="{{ url_for('main.index') }}">Main</a>
+        </li>
+    </ul>
+  </div>
+</nav> 
+<!-- End of Bootstrap Navbar -->
+
+{% block content %}
+{% endblock %}
+
+</body>
+
+<!-- Bootstrap JS, necessary for collapsible navbar -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<!-- End of Bootstrap JS-->
+</html>
