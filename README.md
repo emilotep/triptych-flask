@@ -6,6 +6,26 @@ Why "Triptych" you ask? Well... I thought it sounded cool.
 
 The Flask part is based on the Flask Template repo here: https://github.com/emieli/Flask-Template
 
+## Versions:
+
+Proxmox Virtual Environment 6.1-7
+PHPIpam Dev version 1.5
+FortiOS 6.2.5
+Python 3.7
+
+Relevant python modules:
+
+	python3 -m pip freeze
+	....
+	Flask==1.1.2
+	Jinja2==2.11.2
+	netaddr==0.8.0
+	requests==2.24.0
+	urllib3==1.25.10
+	virtualenv==20.0.31
+	Werkzeug==1.0.1
+	...
+
 ## Whats it for?
 
 Automating deployment of containers in Proxmox, assigning IP from PHPIpam, updating DNS records (PHPIpam PowerDns integration) and creating firewall objects in a Fortinet firewall.
