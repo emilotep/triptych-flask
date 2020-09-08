@@ -22,14 +22,17 @@ class phpipamapi():
 
     def getsubnets(self):
         url = self.baseurl+"/subnets"
-
         result = requests.get(url, headers=self.authheader).json()
         return result
 
 
     def getsubnetaddresses(self, subnetid):
         url = self.baseurl+"/subnets/{}/addresses/".format(subnetid)
+        result = requests.get(url, headers=self.authheader).json()
+        return result
 
+    def getonesubnet(self, subnetid):
+        url = self.baseurl+"/subnets/{}".format(subnetid)
         result = requests.get(url, headers=self.authheader).json()
         return result
 

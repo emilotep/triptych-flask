@@ -1,5 +1,6 @@
 
 # Triptych automation portal
+Why "Triptych" you ask? Well... I thought it sounded cool.
 
 ## Credit where credit is due
 

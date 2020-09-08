@@ -40,18 +40,19 @@ try:
         print("Found no container password in credentials file... attempting to move on. ", e)
 
 except FileNotFoundError as e:
-    print("There is no credentials file in your scriptdir, or it is not readable.", e)
-    ipamapikey = input("Provide IPAM api key                         :")
-    firewallip = input("Provide firewall ip or hostname              :")
-    fwapitoken = input("Provide firewall api token                   :")
-    ipamhost   = input("Provide phpipam hostname or ip               :")
-    ipamuser   = input("Provide phpipam username                     :")
-    ipampasswd = input("Provide phpipam password                     :")
-    pmhost     = input("Provide proxmox ip or hostname               :")
-    pmuser     = input("Provide proxmox username@realm like root@pam :")
-    pmpasswd   = input("Provide proxmox password                     :")
-    sshkey     = input("Provide ssh key to container (blank if none) :")
-    ctpassword = input("Provide ssh password for container           :")
+    print(e)
+    # print("There is no credentials file in your scriptdir, or it is not readable.", e)
+    # ipamapikey = input("Provide IPAM api key                         :")
+    # firewallip = input("Provide firewall ip or hostname              :")
+    # fwapitoken = input("Provide firewall api token                   :")
+    # ipamhost   = input("Provide phpipam hostname or ip               :")
+    # ipamuser   = input("Provide phpipam username                     :")
+    # ipampasswd = input("Provide phpipam password                     :")
+    # pmhost     = input("Provide proxmox ip or hostname               :")
+    # pmuser     = input("Provide proxmox username@realm like root@pam :")
+    # pmpasswd   = input("Provide proxmox password                     :")
+    # sshkey     = input("Provide ssh key to container (blank if none) :")
+    # ctpassword = input("Provide ssh password for container           :")
 
 # Defining arguments
 argparser = argparse.ArgumentParser()
@@ -120,30 +121,46 @@ def to_json(input):
 # Will be possible to automate with powerdnsapi
 # To actually assign the address, use "POST" method instead of "GET"
 # Needs a subnet ID in phpipam, which is hardcoded right now
-# http://ipam.yllenet.com/index.php?page=subnets&section=1&subnetId=10 <== subnet id is 10
- 
+# http://ipam.example.com/index.php?page=subnets&section=1&subnetId=10 <== subnet id is 10
+
+subnetid = "10"
+
+# Getting a new IP from the subnet + the subnet mask and adding them to the ctip variable.
 ylleipam = phpipamapi(ipamhost, ipamapikey)
-result = ylleipam.requestaddress("10", objname, method="GET")
+result = ylleipam.requestaddress(subnetid, objname, method="POST")
 newip = result["data"]
-print(newip)
+subnetinfo = ylleipam.getonesubnet(subnetid)
+netmask = subnetinfo["data"]["mask"]
+ctip = "{}/{}".format(newip, netmask)
 
 # ############# PROXMOX STUFF #############
 # Request next ctid from proxmox
 proxmox = pmapi(pmhost, pmuser, pmpasswd)
 ctid = proxmox.getnextid()
-quit(ctid)
+# quit(ctid)
 
-proxmox.createct(
+# result = proxmox.getct("109")
+# quit(to_json(result))
+
+result = proxmox.createct(
     ctid,
-    newip,
-    "apitest01",
+    ctip,
+    vmname,
     password=ctpassword,
     sshkey=sshkey,
-    
+    # node="pve" # Using default value in class
+    # storage="local-lvm" # Using default storage in class
+    disk=10,
+    # cpus=1, # Using default #CPUs in class = 1
+    # mem=521, # Using default mem amount in class = 512
+    # vlan="", # Using default = no vlan
+    domain=domain, # From arguments
+    dnsserver="10.20.20.13", # This is default but providing it anyway.
     )
 
+# quit(to_json(result))
+
 # ############# FIREWALL STUFF #############
-# Will have to add functionality to check if the object exists.
 firewall = fortiapi(firewallip, fwapitoken)
 
 # Determine if we need to create a new object or update it.

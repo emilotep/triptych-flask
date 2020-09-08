@@ -1,0 +1,16 @@
+
+extracting archive '/var/lib/vz/template/cache/ubuntu-18.04-standard_18.04.1-1_amd64.tar.gz'
+tar: ./etc: Cannot mkdir: Permission denied
+tar: ./etc/appliance.info: Cannot open: No such file or directory
+tar: ./bin: Cannot mkdir: Permission denied
+tar: ./bin: Cannot mkdir: Permission denied
+tar: ./bin/pidof: Cannot open: No such file or directory
+tar: ./bin: Cannot mkdir: Permission denied
+tar: ./bin/sed: Cannot open: No such file or directory
+tar: ./bin: Cannot mkdir: Permission denied
+...
+...
+
+Total bytes read: 637347840 (608MiB, 132MiB/s)
+tar: Exiting with failure status due to previous errors
+TASK ERROR: unable to create CT 111 - command 'lxc-usernsexec -m u:0:100000:65536 -m g:0:100000:65536 -- tar xpf - -z --totals --one-file-system -p --sparse --numeric-owner --acls --xattrs '--xattrs-include=user.*' '--xattrs-include=security.capability' '--warning=no-file-ignored' '--warning=no-xattr-write' -C /var/lib/lxc/111/rootfs --skip-old-files --anchored --exclude './dev/*'' failed: exit code 2
