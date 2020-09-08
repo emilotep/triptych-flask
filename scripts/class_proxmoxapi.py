@@ -3,19 +3,19 @@ import json
 import logging
 import netaddr
 
-try:
-    import http.client as http_client
-except ImportError:
-    # Python 2
-    import httplib as http_client
-http_client.HTTPConnection.debuglevel = 1
+# try:
+#     import http.client as http_client
+# except ImportError:
+#     # Python 2
+#     import httplib as http_client
+# http_client.HTTPConnection.debuglevel = 1
 
-# You must initialize logging, otherwise you'll not see debug output.
-logging.basicConfig()
-logging.getLogger().setLevel(logging.DEBUG)
-requests_log = logging.getLogger("requests.packages.urllib3")
-requests_log.setLevel(logging.DEBUG)
-requests_log.propagate = True
+# # You must initialize logging, otherwise you'll not see debug output.
+# logging.basicConfig()
+# logging.getLogger().setLevel(logging.DEBUG)
+# requests_log = logging.getLogger("requests.packages.urllib3")
+# requests_log.setLevel(logging.DEBUG)
+# requests_log.propagate = True
 
 class pmapi():
 
@@ -43,32 +43,30 @@ class pmapi():
 
     def getnextid(self):
 
-        # This simply returns 
+        # This simply returns the next available CT ID.
         url = self.baseurl+"cluster/nextid"
         result = requests.get(url,cookies=self.authcookie, verify=False).json()
         return result["data"]
 
     def getct(self, vmid):
-        url = self.baseurl+"nodes/pve/lxc/{}".format(vmid)
 
+        # This thing didn't work so well... I'll get back to it... eventually.
+        url = self.baseurl+"nodes/pve/lxc/{}".format(vmid)
         result = requests.get(url,cookies=self.authcookie, verify=False).json()
         return result
 
     def createct(self, vmid, ip, vmname, **kwargs):
+        
         # IP and GW from ip
         if "/" not in ip:
             raise Exception("ip needs to be in CIDR notation, ex: 10.0.0.10/24")
         self.ctip = ip
-        # Setting gateway ip from ip in a dirty way.
-        # self.ctgw = ip.split(".")[0:3]
-        # self.ctgw.append("1")
-        # self.ctgw = ".".join(self.ctgw)
         network = netaddr.IPNetwork(ip)
         self.ctgw = str(network[1])
         self.net0string = "bridge=vmbr0,name=eth0,ip="+self.ctip+",gw="+self.ctgw
         # VMID
         self.vmid = int(vmid)
-        # Checking kwargs for some stuff, setting some defaults
+        # Checking kwargs for some stuff, setting some defaults...
         # Template
         if "template" in kwargs:
             self.template = kwargs["template"]
