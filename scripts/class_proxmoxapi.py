@@ -27,15 +27,21 @@ class pmapi():
             "username": user,
             "password": passwd,
         }
-        self.nodeid = "pve"
+        # Proxmox node
+        if "node" in kwargs:
+            self.nodeid = kwargs["node"]
+        else:
+            self.nodeid = "pve"
 
-        # We "log on" and get the csrf token and the ticket
+        # We "log on" and get the csrf token and the ticket.
         result = requests.post(self.authurl, data=self.authdata, verify=False).json()
         self.csrftoken = result["data"]["CSRFPreventionToken"]
         self.ticket = result["data"]["ticket"]
+        # The authcookie is needed for all interaction
         self.authcookie = {
             "PVEAuthCookie": self.ticket 
         }
+        # The csrf token is needed for all changes you want to make.
         self.csrfheader = {
             "CSRFPreventionToken": self.csrftoken
         }
@@ -51,7 +57,7 @@ class pmapi():
     def getct(self, vmid):
 
         # This thing didn't work so well... I'll get back to it... eventually.
-        url = self.baseurl+"nodes/pve/lxc/{}".format(vmid)
+        url = self.baseurl+"nodes/{}/lxc/{}".format(self.nodeid, vmid)
         result = requests.get(url,cookies=self.authcookie, verify=False).json()
         return result
 
@@ -72,11 +78,6 @@ class pmapi():
             self.template = kwargs["template"]
         else:
             self.template = "local:vztmpl/ubuntu-18.04-standard_18.04.1-1_amd64.tar.gz"
-        # Proxmox node
-        if "node" in kwargs:
-            self.node = kwargs["node"]
-        else:
-            self.node = "pve"
         # CT Password
         if "password" in kwargs:
             self.ctpasswd = kwargs["password"]
@@ -123,28 +124,26 @@ class pmapi():
         else:
             self.dnsserver = "10.20.20.13"
 
-        url = self.baseurl+"nodes/{}/lxc".format(self.node)
-
+        url = self.baseurl+"nodes/{}/lxc".format(self.nodeid)
         self.payload = {
             "cores": self.ctcpus,
             "hostname": vmname,
             "memory": self.ctmem,
             "nameserver": self.dnsserver,
             "net0": self.net0string,
-            # "node": self.node, # Probably not needed.
             "ostemplate": self.template,
             # "pool": "", # Probably not needed.
             "rootfs": "{}:{}".format(self.storage,self.ctdisk),
             # "rootfs": "volume={} size={}".format(self.storage, self.ctdisk),
             "searchdomain": self.domain,
             "swap": 512, # 512 is the default for proxmox.
-            "unprivileged": 0,
+            "unprivileged": 1,
             "start": 1,
             "onboot": 1,
             "password": self.ctpasswd,
             "ssh-public-keys": self.sshkey,
             "vmid": self.vmid,
         }
-        # quit(self.payload)
+
         result = requests.post(url,cookies=self.authcookie, verify=False, data=self.payload, headers=self.csrfheader).json()
         return result

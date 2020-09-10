@@ -47,7 +47,7 @@ class fortiapi():
             }
 
         result = requests.post(accessurl, json=self.payload, verify=False).json()
-
+        return result
 
     def updateaddress(self, **kwargs):
 
@@ -67,4 +67,5 @@ class fortiapi():
             }
 
         result = requests.put(accessurl, json=self.payload, verify=False).json()
+        return result
     # def sendpost(self, endpoint, **kwargs)

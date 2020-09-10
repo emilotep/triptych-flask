@@ -8,7 +8,7 @@ def create_app(test_config=None):
     ''' Create and configure an instance of the Flask application. '''
     app = Flask(__name__)
     app.config.from_mapping(
-    SECRET_KEY="CHANGE_THIS",
+    SECRET_KEY="AYoNACcQQUL3imCPcp",
     )
 
     ''' Error handlers '''
@@ -17,5 +17,9 @@ def create_app(test_config=None):
     ''' Apply the blueprints to the app '''
     from .blueprints.main.views import main
     app.register_blueprint(main)
-    # app.register_blueprint(blog, url_prefix='/blog')
+    
+    from .blueprints.ctdeploy.views import ctdeploy
+    app.register_blueprint(ctdeploy, url_prefix='/ctdeploy')
+    # except ModuleNotFoundError as message:
+    #     return message
     return app

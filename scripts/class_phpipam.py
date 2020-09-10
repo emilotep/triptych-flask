@@ -4,16 +4,17 @@ import json
 
 class phpipamapi():
 
-    def __init__(self, host, apikey, **kwargs):
+    def __init__(self, host, apikey, username, password, **kwargs):
 
-        self.baseurl="http://{}/api/apiadmin".format(host)
+        self.apiapp = "apiadmin"
+        self.baseurl="http://{}/api/{}".format(host, self.apiapp)
         self.authurl = self.baseurl+"/user"
 
         payload = {
             "Auhtorization": "Basic "+apikey
         }
 
-        self.auth = ("api-user", "XJcoS7Ms7Q")
+        self.auth = (username, password)
         result = requests.post(self.authurl, auth=self.auth, json=payload).json()
         # print(result)
         self.token = result["data"]["token"]
@@ -25,16 +26,16 @@ class phpipamapi():
         result = requests.get(url, headers=self.authheader).json()
         return result
 
+    def getonesubnet(self, subnetid):
+        url = self.baseurl+"/subnets/{}".format(subnetid)
+        result = requests.get(url, headers=self.authheader).json()
+        return result
 
     def getsubnetaddresses(self, subnetid):
         url = self.baseurl+"/subnets/{}/addresses/".format(subnetid)
         result = requests.get(url, headers=self.authheader).json()
         return result
 
-    def getonesubnet(self, subnetid):
-        url = self.baseurl+"/subnets/{}".format(subnetid)
-        result = requests.get(url, headers=self.authheader).json()
-        return result
 
     def requestaddress(self, subnetid, hostname, **kwargs):
         if "method" in kwargs:
@@ -46,10 +47,16 @@ class phpipamapi():
                 raise Exception("This method may only use http GET and POST methods")
         else:
             method = "GET"
+        
+        if "devicetype" in kwargs:
+            self.devicetype = kwargs["devicetype"]
+        else:
+            self.devicetype = "unkown"
 
         url = self.baseurl+"/addresses/first_free/{}/".format(subnetid)
         payload = {
-            "hostname": hostname
+            "hostname": hostname,
+            "custom_deviceType": self.devicetype,
         }
 
         if method == "POST":
@@ -57,5 +64,3 @@ class phpipamapi():
         else:
             result = requests.get(url, headers=self.authheader).json()
         return result
-
-# /api/my_app/addresses/first_free/{subnetId}/

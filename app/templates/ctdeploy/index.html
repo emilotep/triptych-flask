@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container bg-light col-sm-12 col-md-10 col-lg-8 col-xl-4 py-1 mb-3 rounded">
+
+    <h1>Enter some details below and hit "Subbmit"!</h1>
+    <form class='form-horizontal' action='/ctdeploy/' method='POST'>
+        <!-- <h4 class="text-bold">Defaults</h4><br> -->
+        <div class='form-group'>
+            <label class='control-label col-sm-10' for="ct_name">Hostname:</label>
+            <div class='col-sm-10'>
+                <input type = "text" class='form-control' placeholder="something.yllenet.com" name="ct_name" id="ct_name">
+            </div>
+            
+            <label class='control-label col-sm-10' for="ct_template">Which Template?:</label>
+            <div class='col-sm-10'>
+                <select class='form-control' name="ct_template" id="ct_template">
+                    <option value="Ubuntu_18_04" selected>Ubuntu 18.04</option>
+                    <option value="somethingelse">Some other pleb os</option>
+                </select>
+            </div>
+
+            <label class='control-label col-sm-10' for="disksize">Disk Size in Gigabytes:</label>
+            <div class='col-sm-10'>
+                <input type = "text" class='form-control' placeholder="10" name="disksize" id="disksize">
+            </div>
+
+            <label class='control-label col-sm-10' for="ct_cpus">Number of CPUs:</label>
+            <div class='col-sm-10'>
+                <input type = "text" class='form-control' placeholder="1" name="ct_cpus" id="ct_cpus">
+            </div>
+
+            <label class='control-label col-sm-10' for="ct_mem">Memory in Megabytes:</label>
+            <div class='col-sm-10'>
+                <input type = "text" class='form-control' placeholder="512" name="ct_mem" id="ct_mem">
+            </div>
+            </div>
+
+            <label class='control-label col-sm-10' for="ct_vlan">Which VLAN?:</label>
+            <div class='col-sm-10'>
+                <select class='form-control' name="ct_vlan" id="ct_vlan">
+                    <option value="SERVER" selected>SERVER</option>
+                    <option value="DMZ">DMZ</option>
+                </select>
+            </div>
+            <label class='control-label col-sm-10' for="ct_sshkey">SSH Public Key:</label>
+            <div class='col-sm-10'>
+                <input type = "text" class='form-control' name="ct_sshkey" id="ct_sshkey">
+            </div>
+
+            <label class='control-label col-sm-10' for="ct_passwrd">Password:</label>
+            <div class='col-sm-10'>
+                <input type = "text" class='form-control' name="ct_passwrd" id="ct_passwrd">
+            </div>
+
+            <br>
+        <div class='form-group'>
+            <div class='col-sm-offset-2 col-sm-10'>
+                <button type='submit' name="deploy_container" class='btn btn-primary'>Deploy Container!</button>
+            </div>
+        </div>
+
+    </form>
+
+</div>
+{% endblock %}

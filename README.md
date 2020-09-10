@@ -26,7 +26,7 @@ Relevant python modules:
 	Werkzeug==1.0.1
 	...
 
-## Whats it for?
+## What's it for?
 
 Automating deployment of containers in Proxmox, assigning IP from PHPIpam, updating DNS records (PHPIpam PowerDns integration) and creating firewall objects in a Fortinet firewall.
 PHEW!
@@ -43,7 +43,7 @@ Some defaults are hardcoded in the classes, read through and edit what you want.
 
 ## stuff about credentials
 
-Create a credentials.json file like this somewhere and tell the script where to find it via the credsdir variable (hard coded):
+Create a credentials.json file like this somewhere and tell the script where to find it via the credsdir variable (hard coded, see below):
 
 	{
 		"ipamapikey":   "asdasdasdasdasdasdasdasdasdasdasd",
@@ -53,12 +53,22 @@ Create a credentials.json file like this somewhere and tell the script where to 
 		"ipamuser":     "yourapiuser",
 		"ipampasswd":   "yourapipassword",
 		"pmhost":       "pm.example.com",
-		"pmuser":       "root@pam",
-		"pmpasswd":     "yourproxmoxpassword",
-		"sshkey":       "ssh-rsa asdasdasdasdasdasd....asdasdasdasd something@somehost"
+		"pmuser":       "root@pam"
 	}
 
 
-	
-    
+## Hardcoded stuff you need to think about
+
+* the "credsdir" variable provides the absolute path to the credentials.json file and is hard coded in a few places in triptych-automate.py, change it to fit your environment. 
+* dnsserver for containers is also hard coded in triptych-automate.py, change it to fit your env.
+* the proxmox node id can be supplied to the __init__ of proxmoxapi but defaults to fit my env. Might consider changing that.
+* self.net0string in class_proxmoxapi.py is hard coded to fit my env. might want to look at it.
+* self.template in class_proxmoxapi.py can be provided with kwargs, but defaults to my default template. might want to change that to fit you.
+* self.storage in class_proxmoxapi.py
+* self.domain in class_proxmoxapi.py defaults to fit my env.
+* self.dnsserver in class_proxmoxapi.py defaults to fit my env.
+* object type in class_fortiapi.py is hard coded to ipmask, functionality can be extended here.
+* devicetyp in class_phpipam.py has a hard coded parameter in the payload which is a custom field in my IPAM. remove this or create the field as a custom address field or it will break your balls.
+
+Other than that it's probably not too bad, the templates in app/templates/ctdeploy have placeholders and defaults that you might want to change as well.
 

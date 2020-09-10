@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container bg-light col-sm-12 col-md-10 col-lg-8 col-xl-4 py-1 mb-3 rounded">
+
+    <h1>Here's what u did!</h1>
+    <p>
+        <!-- {{ ct_hostname }}<br> -->
+        <!-- {{ ct_disksize }}<br> -->
+        <!-- {{ ct_cpus }}<br> -->
+        <!-- {{ ct_memory }}<br> -->
+        <!-- {{ ct_vlan }}<br> -->
+        <!-- {{ ct_sshkey }}<br> -->
+        <!-- {{ ct_password }}<br> -->
+        <!-- {{ ct_template }}<br> -->
+        {{ ct_ip }}<br>
+        {{ ct_id }}<br>
+    </p>
+
+</div>
+{% endblock %}
