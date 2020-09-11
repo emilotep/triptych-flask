@@ -6,27 +6,20 @@
     <h1>Deployment Success!</h1>
     <h2>Details</h2>
     <p>
-        IP: {{ ct_ip }}
-        Hostname : {{ ct_hostname }}
-        VLAN: {{ ct_vlan }}
-        Type: {{ ct_template }}
+        IP: {{ ct_ip }}<br>
+        Hostname : {{ ct_hostname }}<br>
+        VLAN: {{ ct_vlan }}<br>
+        Type: {{ ct_template }}<br>
     </p>
-    
     <p>
+        Your container has been built and started, your firewall has been updated with an object, and IP 
+        is reserved in PHPIpam + a PTR record has been autocreated if you have integrated PHPIpam with 
+        PowerDNS. <br>
 
+        You need to log into your <a href="http://ipam.yllenet.com">IPAM</a> and add an A-record from 
+        the reserved IP address (because I haven't integrated this with PowerDNS API yet). Apart from that, 
+        you're golden. 
     </p>
 
 </div>
 {% endblock %}
-
-deploy_status = deploy_status,
-fwobj_status = fwobj_status,
-ct_id = ct_id,
-ct_ip = ct_ip,
-ct_hostname = ct_hostname,
-ct_disksize = ct_disksize,
-ct_cpus = ct_cpus,
-ct_memory = ct_memory,
-ct_vlan = ct_vlan,
-ct_template = ct_template
-)
