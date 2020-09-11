@@ -5,6 +5,7 @@ import urllib3
 import json
 # import argparse
 import sys
+import os
 
 # Disabling SSL warnings
 urllib3.disable_warnings()
@@ -143,7 +144,7 @@ def getnewip(vlan, hostname, cttype):
     # Getting a new IP from the subnet + the subnet mask and adding them to the ctip variable.
     ylleipam = phpipamapi(ipamhost, ipamapikey, ipamuser, ipampasswd)
     # Need to add functionality to add custom_device-type to request.
-    result = ylleipam.requestaddress(subnetid, hostname.lower(), method="GET")
+    result = ylleipam.requestaddress(subnetid, hostname.lower(), devicetype="ubuntu-container", method="POST")
     newip = result["data"]
     subnetinfo = ylleipam.getonesubnet(subnetid)
     netmask = subnetinfo["data"]["mask"]
@@ -179,10 +180,16 @@ def deploy_container(ctid, ctip, hostname, sshkey, ctpassword, disk, cpus, mem, 
     except FileNotFoundError as e:
         return(e)
     
-    ctname = hostname.split(".")[0].upper()
-    domain = hostname.split(".")[1:].lower()
-    domain = ".".join(domain)
+    # I have only one template at present, here you can customize a bit.
+    if template == "Ubuntu_18_04":
+        template = "local:vztmpl/ubuntu-18.04-standard_18.04.1-1_amd64.tar.gz"
     
+
+    ctname = hostname.split(".")[0].upper()
+    domain = hostname.split(".")[1:]
+    domain = ".".join(domain)
+    # return ctname, domain, template
+
     if vlan == "DMZ":
         vlan = "50"
     else:
@@ -195,12 +202,13 @@ def deploy_container(ctid, ctip, hostname, sshkey, ctpassword, disk, cpus, mem, 
         ctname,
         password=ctpassword,
         sshkey=sshkey,
+        template=template,
         # node="pve" # Using default value in class
         # storage="local-lvm" # Using default storage in class
         disk=disk,
-        cpus=cpus, # Using default #CPUs in class = 1
-        mem=mem, # Using default mem amount in class = 512
-        vlan=vlan, # Using default = no vlan
+        cpus=cpus, # Default #CPUs in class = 1
+        mem=mem, # Default mem amount in class = 512
+        vlan=vlan, 
         domain=domain, # From arguments
         dnsserver="10.20.20.13", # This is default but providing it anyway.
         )
@@ -245,4 +253,7 @@ def createfwobj(hostname, ctip):
     
     return result
 
-
+# Calling my ansible inventory script.
+# Sorry for doing it this way but it was the laziest solution.
+def inventorize():
+    os.system("python3 /opt/scripts/inventory-scripts/inventorize.py")

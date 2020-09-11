@@ -1,5 +1,32 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="container bg-light col-sm-12 col-md-10 col-lg-8 col-xl-4 py-1 mb-3 rounded">
 
+    <h1>Deployment Success!</h1>
+    <h2>Details</h2>
+    <p>
+        IP: {{ ct_ip }}
+        Hostname : {{ ct_hostname }}
+        VLAN: {{ ct_vlan }}
+        Type: {{ ct_template }}
+    </p>
+    
+    <p>
+
+    </p>
+
+</div>
 {% endblock %}
+
+deploy_status = deploy_status,
+fwobj_status = fwobj_status,
+ct_id = ct_id,
+ct_ip = ct_ip,
+ct_hostname = ct_hostname,
+ct_disksize = ct_disksize,
+ct_cpus = ct_cpus,
+ct_memory = ct_memory,
+ct_vlan = ct_vlan,
+ct_template = ct_template
+)

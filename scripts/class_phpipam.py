@@ -51,7 +51,7 @@ class phpipamapi():
         if "devicetype" in kwargs:
             self.devicetype = kwargs["devicetype"]
         else:
-            self.devicetype = "unkown"
+            self.devicetype = "unspecified"
 
         url = self.baseurl+"/addresses/first_free/{}/".format(subnetid)
         payload = {
