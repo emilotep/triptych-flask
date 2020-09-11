@@ -1,24 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container bg-light col-sm-12 col-md-10 col-lg-8 col-xl-4 py-1 mb-3 rounded">
+<div class="container text-light bg-dark col-sm-12 col-md-10 col-lg-8 col-xl-4 py-1 mb-3 rounded">
 
-    <h1>Deployment Success!</h1>
-    <h2>Details</h2>
+    <h1 class="text-center text-success">Deployment Success!</h1>
+    <h3>Details:</h3>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">IP:</th>
+                <th scope="col">Hostname:</th>
+                <th scope="col">VLAN:</th>
+                <th scope="col">Type:</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class=table-light>
+                <td>{{ ct_ip }}</td>
+                <td><a href="ssh://root@{{ ct_hostname }}">{{ ct_hostname }}</a></td>
+                <td>{{ ct_vlan }}</td>
+                <td>{{ ct_template }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
     <p>
-        IP: {{ ct_ip }}<br>
-        Hostname : {{ ct_hostname }}<br>
-        VLAN: {{ ct_vlan }}<br>
-        Type: {{ ct_template }}<br>
+        <a href="ssh://root@{{ ct_hostname }}">{{ ct_hostname }}</a> is deployed and started, your firewall has been updated with an object, and IP 
+        is reserved in PHPIpam + a PTR record has been autocreated if you have integrated PHPIpam with 
+        PowerDNS.
     </p>
     <p>
-        Your container has been built and started, your firewall has been updated with an object, and IP 
-        is reserved in PHPIpam + a PTR record has been autocreated if you have integrated PHPIpam with 
-        PowerDNS. <br>
-
-        You need to log into your <a href="http://ipam.yllenet.com">IPAM</a> and add an A-record from 
-        the reserved IP address (because I haven't integrated this with PowerDNS API yet). Apart from that, 
-        you're golden. 
+        Log into your <a href="http://ipam.yllenet.com">IPAM</a> and add an A-record from 
+        the reserved IP address (I haven't integrated this with PowerDNS API yet).
     </p>
 
 </div>
