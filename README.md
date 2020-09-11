@@ -33,7 +33,12 @@ PHEW!
 
 Some defaults are hardcoded in the classes, read through and edit what you want. You can probably glean some info about my environment from the defaults but whatever...
 
-## stuff you need to know about your environment:
+## Start it up
+
+	export FLASK_ENV=development
+	flask run --host=0.0.0.0
+
+## Stuff you need to know about your environment:
 
 * proxmox ip/user/password/node id
 * firewall ip/api user token
@@ -41,7 +46,7 @@ Some defaults are hardcoded in the classes, read through and edit what you want.
 * phpipam subnet id that you want to use
 * probably more shit.
 
-## stuff about credentials
+## Stuff about credentials
 
 Create a credentials.json file like this somewhere and tell the script where to find it via the credsdir variable (hard coded, see below):
 
