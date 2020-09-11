@@ -37,6 +37,8 @@ Some defaults are hardcoded in the classes, read through and edit what you want.
 
 	export FLASK_ENV=development
 	flask run --host=0.0.0.0
+	
+	# browse to <yourip>:5000
 
 ## Stuff you need to know about your environment:
 
