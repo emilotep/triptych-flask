@@ -253,6 +253,34 @@ def createfwobj(hostname, ctip):
     
     return result
 
+# ########### POWERDNS STUFF #############
+# I couldn't get my class for powerdns API to work so i did it the reaaaaaally ugly fucked-up way.
+
+def pdnsupdate(hostname, ip, zone):
+
+    credsdir = "/opt/scripts/"
+    try:
+        with open(credsdir+"credentials.json","r") as f1:
+            credentials = json.load(f1)
+
+        pdnshost = credentials["pdnshost"]
+        pdnsapikey = credentials["pdnsapikey"]
+
+    except FileNotFoundError as e:
+        print(e)
+
+    if zone[-1] != ".":
+        zone = zone+"."
+    
+    if hostname[-1] != ".":
+        if zone[0::-1] not in hostname:
+            hostname = hostname + "." + zone
+        else:
+            hostname = hostname + "."
+    
+    commandstring = "curl -X PATCH --data '{\"rrsets\": [ {\"name\": \""+hostname+"\", \"type\": \"A\", \"ttl\": 900, \"changetype\": \"REPLACE\", \"records\": [ {\"content\": \""+ip+"\", \"disabled\": false } ] } ] }' -H 'X-API-Key: "+pdnsapikey+"' http://"+pdnshost+":8081/api/v1/servers/localhost/zones/"+zone
+    os.system(commandstring)
+
 # Calling my ansible inventory script.
 # Sorry for doing it this way but it was the laziest solution.
 def inventorize():

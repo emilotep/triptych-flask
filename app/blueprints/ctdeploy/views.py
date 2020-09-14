@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, url_for, request, abort, session, flash
 import ipaddress
-from scripts.triptych_automate import getnewip, getnextid, deploy_container, to_json, createfwobj, inventorize
+from scripts.triptych_automate import getnewip, getnextid, deploy_container, to_json, createfwobj, inventorize, pdnsupdate
+import socket
+import time
 
 ctdeploy = Blueprint("ctdeploy", __name__)
 
@@ -62,8 +64,24 @@ def index():
         ct_ip = ct_ip.split("/")[0] + "/32"
         fwobj_status = createfwobj(ct_hostname, ct_ip)
 
+        # Trigger powerdns update
+        dns_hostname = ct_hostname.split(".")[0]
+        dns_domain = ct_hostname.split(".")[1:]
+        dns_domain = ".".join(dns_domain)
+        dns_ip = ct_ip.split("/")[0]
+        result = pdnsupdate(dns_hostname, dns_ip, dns_domain)
+
         # Triggering update of ansible inventory
         inventorize()
+
+        counter = 0
+        while counter < 3:
+            try:
+                socket.gethostbyname(ct_hostname)
+                break
+            except socket.gaierror:
+                time.sleep(1)
+                counter += 1
 
         # Some checking of object creation and container deployment status:
         if fwobj_status["status"] == "success":
