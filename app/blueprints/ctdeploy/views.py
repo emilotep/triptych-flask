@@ -15,6 +15,7 @@ def index():
         return render_template("ctdeploy/index.html", title = title)
     
     # THIS HAPPENS WHEN WE HIT "DEPLOY CONTAINER" IN THE FORM.
+
     if (request.method == "POST") and "deploy_container" in request.form:
         
         ct_hostname    = request.form["ct_name"].lower()
@@ -25,9 +26,21 @@ def index():
         ct_sshkey      = request.form["ct_sshkey"]
         ct_password    = request.form["ct_passwrd"] 
         ct_template    = request.form["ct_template"] 
+
+        # Setting defaults to reflect form placeholders
+        if ct_disksize == "":
+            ct_disksize = 10
         
+        if ct_cpus == "":
+            ct_cpus = 1
+        
+        if ct_memory == "":
+            ct_memory = 512
+
         if "Ubuntu" in ct_template:
             ct_type = "ubuntu-container"
+        else:
+            pass
 
         ct_ip = getnewip(ct_vlan, ct_hostname, ct_type)
         ct_id = getnextid()
@@ -67,6 +80,32 @@ def index():
                     ct_disksize = ct_disksize,
                     ct_cpus = ct_cpus,
                     ct_memory = ct_memory,
+                    ct_vlan = ct_vlan,
+                    ct_template = ct_template
+                    )
+
+    # THIS HAPPENS IF YOU SET THE BUTTON TO deploy_test instead of deploy_container
+    # in the ctdeploy/index.html template. 
+    if (request.method == "POST") and "deploy_test" in request.form:
+        title = "Test"
+        deploy_status = "OK"
+        fwobj_status = "OK"
+        ct_ip = "10.20.20.10"
+        ct_hostname = "dudeface.yllenet.com"
+        ct_vlan = "SERVER"
+        ct_template = "Ubuntu 18.04"
+        ct_id = "111"
+        return render_template(
+                    "ctdeploy/deploy-success.html", 
+                    title = title,
+                    deploy_status = deploy_status,
+                    fwobj_status = fwobj_status,
+                    ct_id = ct_id,
+                    ct_ip = ct_ip,
+                    ct_hostname = ct_hostname,
+                    # ct_disksize = ct_disksize,
+                    # ct_cpus = ct_cpus,
+                    # ct_memory = ct_memory,
                     ct_vlan = ct_vlan,
                     ct_template = ct_template
                     )
