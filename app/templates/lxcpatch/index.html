@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<script type="text/javascript">// <![CDATA[
+    function loading(){
+        $("#loading").show();
+        $("#content").hide();       
+    }
+// ]]></script>
+
+<style>
+    div#loading {
+        width: 35px;
+        height: 35px;
+        display: none;
+        background: url(/static/loading.gif) no-repeat;
+        cursor: wait;
+        }
+</style>
+
+
+<div class="container text-light bg-dark col-sm-12 col-md-10 col-lg-8 col-xl-4 py-1 mb-3 rounded">
+
+    <h1 class="text-center">What do you want to do?</h1>
+    <br>
+    <h4 class="text-success">Standardise LXC Containers Config:</h4>
+    <p class="font-italic px-3">Sets timezone, provisions ssh keys, updates apt cache and installs a few basic packages.</p>
+    <form class='form-horizontal' action='/lxcpatch/' method='POST'>
+        <div id="loading"></div>
+        <div class='form-group'>
+            <div class='col-sm-offset-2 col-sm-10'>
+                <button type='submit' name="configure_lxc" class='btn btn-primary' onclick="loading();">Go!</button>
+            </div>
+        </div>
+    </form>
+    <h4 class="text-success">Upgrade LXC Container Packages:</h4>
+    <p class="font-italic px-3">Upgrades packages of LXC containers.</p>
+    <form class='form-horizontal' action='/lxcpatch/' method='POST'>
+        <div class='form-group'>
+            <div class='col-sm-offset-2 col-sm-10'>
+                <button type='submit' name="upgrade_lxc" class='btn btn-primary'>Go!</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+{% endblock %}

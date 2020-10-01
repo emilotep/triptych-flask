@@ -19,7 +19,9 @@ def create_app(test_config=None):
     app.register_blueprint(main)
     
     from .blueprints.ctdeploy.views import ctdeploy
+    from .blueprints.lxcpatch.views import lxcpatch
     app.register_blueprint(ctdeploy, url_prefix='/ctdeploy')
+    app.register_blueprint(lxcpatch, url_prefix='/lxcpatch')
     # except ModuleNotFoundError as message:
     #     return message
     return app

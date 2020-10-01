@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container text-light bg-dark col-sm-12 col-md-10 col-lg-8 col-xl-4 py-1 mb-3 rounded">
+
+    <h1 class="text-center text-success">Configuration Status!</h1>
+    <h4>Details:</h4>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Host:</th>
+                <th class="text-success" scope="col">OK:</th>
+                <th class="text-warning" scope="col">Changed:</th>
+                <th class="text-danger" scope="col">Failed:</th>
+                <th class="text-danger" scope="col">Unreachable:</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in statuses %}
+            <tr class=table-light>
+                <td class="font-weight-bold">{{ item }}</td>
+                <td class="text-success font-weight-bold">{{ statuses[item]["ok"] }}</td>
+                <td class="text-warning font-weight-bold">{{ statuses[item]["changed"] }}</td>
+                <td class="text-danger font-weight-bold">{{ statuses[item]["failed"] }}</td>
+                <td class="text-danger font-weight-bold">{{ statuses[item]["unreachable"] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+
+</div>
+{% endblock %}
