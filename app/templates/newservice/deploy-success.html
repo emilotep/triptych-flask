@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container text-light bg-dark col-sm-12 col-md-10 col-lg-8 col-xl-4 py-1 mb-3 rounded">
+    <h1 class="text-center text-success">Deployment Success!</h1>
+    <h3>Details:</h3>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Vlan:</th>
+                <th scope="col">Subnet:</th>
+                <th scope="col">Name:</th>
+                <th scope="col">Zone:</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class=table-light>
+                <td>{{ vlan_number }}</td>
+                <td>{{ ip_subnet }}</td>
+                <td>{{ vlan_name }}</td>
+                <td>{{ zone }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <p>
+        A CI-CD pipeline has been triggered at <a href="http://git.yllenet.com/root/avd_dc1/-/pipelines"> GitLab</a> to deploy the new service.
+    </p>
+</div>
+{% endblock %}

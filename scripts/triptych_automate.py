@@ -212,6 +212,7 @@ def deploy_container(ctid, ctip, hostname, sshkey, ctpassword, disk, cpus, mem, 
         domain=domain, # From arguments
         dnsserver="10.20.20.13", # This is default but providing it anyway.
         )
+    print(to_json(result))
     return result
 
 # ############# FIREWALL STUFF #############

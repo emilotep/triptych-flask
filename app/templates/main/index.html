@@ -3,9 +3,16 @@
 {% block content %}
 <div class="container bg-light col-sm-12 col-md-10 col-lg-8 col-xl-4 py-1 mb-3 rounded">
 
-    <h1>Hey dude/dudette/nonbinary dude-person!</h1>
+    <h1>Howdy!</h1>
     <p>Let's automate some stuff.</p>
-    <p>Head on over to the Deployment page to start cooking.</p>
+    <p>Head on over to the Deployment page to start cooking or press the button below to run the avd sync script.</p>
+    <form class='form-horizontal' action='/' method='POST'>
+        <div class='form-group'>
+            <div class='col-sm-offset-2 col-sm-10'>
+                <button type='submit' name="run_sync" class='btn btn-primary'>Run AVD-sync!</button>
+            </div>
+        </div>
+    </form>
 
 </div>
 {% endblock %}

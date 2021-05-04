@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
+
 <title>{{ title }}</title>
 <!-- Bootstrap CSS to make the website pretty -->
 <meta charset="utf-8">
@@ -14,7 +14,7 @@
 
 <!-- Bootstrap Navbar -->
 <nav class="navbar navbar-expand-md bg-dark navbar-dark mb-3">
-  
+
   <!-- Brand -->
   <a class="navbar-brand" href="#">Triptych</a>
 
@@ -35,10 +35,13 @@
       </li>
       <li class="nav-item">
         <a class="nav-link text-light" href="{{ url_for('lxcpatch.index') }}">Container Operations</a>
-    </li>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-light" href="{{ url_for('newservice.index') }}">Service Deployment</a>
+      </li>
     </ul>
   </div>
-</nav> 
+</nav>
 <!-- End of Bootstrap Navbar -->
 
 {% block content %}

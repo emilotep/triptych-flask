@@ -17,11 +17,13 @@ def create_app(test_config=None):
     ''' Apply the blueprints to the app '''
     from .blueprints.main.views import main
     app.register_blueprint(main)
-    
+
     from .blueprints.ctdeploy.views import ctdeploy
     from .blueprints.lxcpatch.views import lxcpatch
+    from .blueprints.newservice.views import newservice
     app.register_blueprint(ctdeploy, url_prefix='/ctdeploy')
     app.register_blueprint(lxcpatch, url_prefix='/lxcpatch')
+    app.register_blueprint(newservice, url_prefix='/newservice')
     # except ModuleNotFoundError as message:
     #     return message
     return app

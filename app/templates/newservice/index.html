@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<script type="text/javascript">
+    function myFunction() {
+        // Get the field
+        var service_type = document.getElementById("service_type");
+        // Get the output text
+        var zonefield = document.getElementById("zone");
+        var zonelabel = document.getElementById("zonelabel");
+
+        // If the checkbox is checked, display the output text
+        if (service_type.value == "l3_type"){
+        zonefield.style.display = "block";
+        zonelabel.style.display = "block";
+        } else {
+        zonefield.style.display = "none";
+        zonelabel.style.display = "none";
+        }
+    }
+</script>
+<div class="container text-light bg-dark col-sm-12 col-md-10 col-lg-8 col-xl-4 py-1 mb-3 rounded">
+
+    <h1 class="text-center">Enter some info!</h1>
+    <br>
+    <form class='form-horizontal' action='/newservice/' method='POST'>
+        <div class='form-group'>
+
+            <label class='control-label col-sm-10' for="service_type">Type of Service:</label>
+            <div class='col-sm-10'>
+                <select class='form-control' name="service_type" id="service_type" onchange="myFunction()">
+                    <option value="blank"></option>
+                    <option value="l3_type">L3 Service</option>
+                    <option value="l2_type">L2 Service</option>
+                </select>
+            </div>
+
+            <label class='control-label col-sm-10' id="zonelabel" for="zone" style="display:none">Zone:</label>
+            <div class='col-sm-10'>
+                <select class='form-control' name="zone" id="zone" style="display:none">
+                    <option value="app">APP</option>
+                    <option value="db">DB</option>
+                    <option value="web">WEB</option>
+                </select>
+            </div>
+            <br>
+
+        <div class='form-group'>
+            <div class='col-sm-offset-2 col-sm-10'>
+                <button type='submit' name="deploy_service" class='btn btn-primary'>Submit!</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
